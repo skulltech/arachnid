@@ -1,2 +1,2 @@
-# instagram-crawler
+# arachnid
 Crawling Instagram for reasons.
