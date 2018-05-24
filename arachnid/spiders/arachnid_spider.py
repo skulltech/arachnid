@@ -2,6 +2,7 @@ import json
 import scrapy
 
 
+
 class ArachnidSpider(scrapy.Spider):
     name = 'arachnid'
 
@@ -20,17 +21,19 @@ class ArachnidSpider(scrapy.Spider):
         username = response.url.split('/')[3]
         data = json.loads(response.xpath('//body//script[@type="text/javascript"]/text()').extract_first()[21:-1])
         self.log('Scraped profile {}'.format(username))
-        '''
         yield {
             'username': data['entry_data']['ProfilePage'][0]['graphql']['user']['username'],
+            'full_name': data['entry_data']['ProfilePage'][0]['graphql']['user']['full_name'],
+            'biography': data['entry_data']['ProfilePage'][0]['graphql']['user']['biography'],
+            'followers': data['entry_data']['ProfilePage'][0]['graphql']['user']['edge_followed_by']['count'],
+            'following': data['entry_data']['ProfilePage'][0]['graphql']['user']['edge_follow']['count'],
+            'full_data': data,
         }
-        '''
-        yield data
 
         count = data['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['count']
-        edges = data['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges']
-        for edge in edges:
-            shortcode = edge['node']['shortcode']
+        media = data['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges']
+        for medium in media:
+            shortcode = medium['node']['shortcode']
             yield scrapy.Request('https://www.instagram.com/p/{}/'.format(shortcode), self.parse_post) 
 
 
