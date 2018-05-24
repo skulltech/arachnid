@@ -14,6 +14,8 @@ BOT_NAME = 'arachnid'
 SPIDER_MODULES = ['arachnid.spiders']
 NEWSPIDER_MODULE = 'arachnid.spiders'
 
+# Depth priority adjustment for making the search BFO
+DEPTH_PRIORITY = 1
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'arachnid (+http://www.yourdomain.com)'
